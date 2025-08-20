@@ -3,7 +3,6 @@ workflows:
   - name: bakta-wdl
     subclass: wdl
     primaryDescriptorPath: /wdls/workflows/Bakta.wdl
-    latestTagAsDefault: 'true'
     authors:
       - orcid: "0000-0002-6006-0641"
 
