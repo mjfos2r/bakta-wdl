@@ -10,11 +10,11 @@ workflow Bakta {
         file_prefix:        "Prefix to pass to bakta"
         contigs:            "contigs to annotate"
         bakta_db:           "tar.gz containing the full bakta database for annotation"
+        ncbi_compliant:     "[Default: False] Run bakta in Genbank compliance mode."
+        complete:           "[Default: False] Is this a complete genome?"
         genus:              "[Default: Borrelia] genus to pass to bakta"
         species:            "[Default: burgdorferi] species to pass to bakta"
         strain:             "[Default: ''] strain to pass to bakta"
-        ncbi_compliant:     "[Default: False] Run bakta in Genbank compliance mode."
-        complete:           "[Default: False] Is this a complete genome?"
         locus_tag_prefix:   "Optional: NCBI assigned locus tag prefix."
         gram:               "[Default: '?'] Is this bacteria gram + or - ?"
     }
@@ -67,12 +67,11 @@ task Annotate {
         file_prefix:        "Prefix to pass to bakta"
         contigs:            "contigs to annotate"
         bakta_db:           "tar.gz containing the full bakta database for annotation"
-
+        ncbi_compliant:     "[Default: False] Run bakta in Genbank compliance mode."
+        complete:           "[Default: False] Is this a complete genome?"
         genus:              "[Default: Borrelia] genus to pass to bakta"
         species:            "[Default: burgdorferi] species to pass to bakta"
         strain:             "[Default: ''] strain to pass to bakta"
-        ncbi_compliant:     "[Default: False] Run bakta in Genbank compliance mode."
-        complete:           "[Default: False] Is this a complete genome?"
         locus_tag_prefix:   "Optional: NCBI assigned locus tag prefix."
         gram:               "[Default: '?'] Is this bacteria gram + or - ?"
     }
@@ -102,7 +101,6 @@ task Annotate {
 
         BAKTA_DB="bakta_db"
 
-        echo "Using Args: ${args[@]}"
         echo "Beginning bakta annotation."
         bakta \
             --threads "$NPROC" \
