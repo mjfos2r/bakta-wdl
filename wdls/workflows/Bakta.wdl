@@ -96,6 +96,7 @@ task Annotate {
         set -euxo pipefail
         NPROC=$(awk '/^processor/{print}' /proc/cpuinfo | wc -l)
 
+        mkdir -p bakta_db
         rapidgzip -c -d "~{bakta_db}" | tar -xvf - -C bakta_db --strip-components=1
 
         BAKTA_DB="bakta_db"
