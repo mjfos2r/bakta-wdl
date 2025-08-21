@@ -97,7 +97,7 @@ task Annotate {
         set -euxo pipefail
         NPROC=$(awk '/^processor/{print}' /proc/cpuinfo | wc -l)
 
-        tar --use-compress-program=pigz -xf "~{bakta_db}" -C bakta_db
+        tar -xJf "~{bakta_db}" -C bakta_db
 
         BAKTA_DB="bakta_db"
 
