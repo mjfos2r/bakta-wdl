@@ -7,18 +7,17 @@ workflow Bakta {
         description: "Terra workflow to annotate draft bacterial assemblies using Bakta"
     }
     parameter_meta {
-        file_prefix:        "Prefix to pass to bakta"
-        contigs:            "contigs to annotate"
-        bakta_db:           "tar.gz containing the full bakta database for annotation"
+        file_prefix:        "Prefix to pass to bakta for file output naming."
+        contigs:            "fasta file containing contig(s) to annotate."
+        bakta_db:           "tar.gz containing the full bakta database for annotation."
         ncbi_compliant:     "[Default: False] Run bakta in Genbank compliance mode."
         complete:           "[Default: False] Is this a complete genome?"
         genus:              "[Default: Borrelia] genus to pass to bakta"
         species:            "[Default: burgdorferi] species to pass to bakta"
-        strain:             "[Default: ''] strain to pass to bakta"
+        strain:             "[Default: \'\'] strain to pass to bakta"
         locus_tag_prefix:   "Optional: NCBI assigned locus tag prefix."
-        gram:               "[Default: '?'] Is this bacteria gram + or - ?"
+        gram:               "[Default: \'?\'] Is this bacteria gram \'+\' or \'-\' ?"
     }
-
     input {
             String file_prefix
             File contigs
@@ -45,35 +44,35 @@ workflow Bakta {
             gram = gram
     }
     output {
-        File bakta_annotations_tsv = Annotate.annotations_tsv
-        File bakta_gff3 = Annotate.gff3
-        File bakta_gbff = Annotate.gbff
-        File bakta_embl = Annotate.embl
-        File bakta_fna = Annotate.fna
-        File bakta_ffn = Annotate.ffn
-        File bakta_faa = Annotate.faa
-        File bakta_inference_metrics_tsv = Annotate.inference_metrics_tsv
-        File bakta_hypotheticals_tsv = Annotate.hypotheticals_tsv
-        File bakta_hypotheticals_faa = Annotate.hypotheticals_faa
-        File bakta_summary_txt = Annotate.summary_txt
-        File bakta_png = Annotate.png
-        File bakta_svg = Annotate.svg
-        File bakta_summary_json = Annotate.summary_json
+        File annotations_tsv = Annotate.annotations_tsv
+        File gff3 = Annotate.gff3
+        File gbff = Annotate.gbff
+        File embl = Annotate.embl
+        File fna = Annotate.fna
+        File ffn = Annotate.ffn
+        File faa = Annotate.faa
+        File inference_metrics_tsv = Annotate.inference_metrics_tsv
+        File hypotheticals_tsv = Annotate.hypotheticals_tsv
+        File hypotheticals_faa = Annotate.hypotheticals_faa
+        File summary_txt = Annotate.summary_txt
+        File png = Annotate.png
+        File svg = Annotate.svg
+        File summary_json = Annotate.summary_json
     }
 }
 
 task Annotate {
     parameter_meta {
-        file_prefix:        "Prefix to pass to bakta"
-        contigs:            "contigs to annotate"
+        file_prefix:        "Prefix to pass to bakta for file output naming."
+        contigs:            "fasta file containing contig(s) to annotate."
         bakta_db:           "tar.gz containing the full bakta database for annotation"
         ncbi_compliant:     "[Default: False] Run bakta in Genbank compliance mode."
         complete:           "[Default: False] Is this a complete genome?"
         genus:              "[Default: Borrelia] genus to pass to bakta"
         species:            "[Default: burgdorferi] species to pass to bakta"
-        strain:             "[Default: ''] strain to pass to bakta"
+        strain:             "[Default: \'\'] strain to pass to bakta"
         locus_tag_prefix:   "Optional: NCBI assigned locus tag prefix."
-        gram:               "[Default: '?'] Is this bacteria gram + or - ?"
+        gram:               "[Default: \'?\'] Is this bacteria gram \'+\' or \'-\' ?"
     }
     input {
         String file_prefix
@@ -97,7 +96,7 @@ task Annotate {
         set -euxo pipefail
         NPROC=$(awk '/^processor/{print}' /proc/cpuinfo | wc -l)
 
-        tar -xJf "~{bakta_db}" -C bakta_db
+        rapidgzip -c -d "~{bakta_db}" | tar -xvf - -C bakta_db --strip-components=1
 
         BAKTA_DB="bakta_db"
 
