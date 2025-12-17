@@ -7,16 +7,32 @@ workflow Bakta {
         description: "Terra workflow to annotate draft bacterial assemblies using Bakta"
     }
     parameter_meta {
-        file_prefix:        "Prefix to pass to bakta for file output naming."
-        contigs:            "fasta file containing contig(s) to annotate."
-        bakta_db:           "tar.gz containing the full bakta database for annotation."
-        ncbi_compliant:     "[Default: False] Run bakta in Genbank compliance mode."
-        complete:           "[Default: False] Is this a complete genome?"
-        genus:              "[Default: Borrelia] genus to pass to bakta"
-        species:            "[Default: burgdorferi] species to pass to bakta"
-        strain:             "[Default: \'\'] strain to pass to bakta"
-        locus_tag_prefix:   "Optional: NCBI assigned locus tag prefix."
-        gram:               "[Default: \'?\'] Is this bacteria gram \'+\' or \'-\' ?"
+        file_prefix:         "Prefix to pass to bakta for file output naming."
+        contigs:             "fasta file containing contig(s) to annotate."
+        bakta_db:            "tar.gz containing the full bakta database for annotation"
+        ncbi_compliant:      "[Default: False] Run bakta in Genbank compliance mode."
+        complete:            "[Default: False] Is this a complete genome?"
+        genus:               "[Default: Borrelia] genus to pass to bakta"
+        species:             "[Default: burgdorferi] species to pass to bakta"
+        strain:              "[Default: \'\'] strain to pass to bakta"
+        gram:                "[Default: \'?\'] Is this bacteria gram \'+\' or \'-\' ?"
+        locus_tag_prefix:    "Optional: NCBI assigned locus tag prefix."
+        keep_contig_headers: "Optional:keep contig headers of input assembly."
+        metagenome:          "Optional:"
+        skip_trna:           "Optional: Skip annotation stage: trna"
+        skip_tmrna:          "Optional: Skip annotation stage: tmrna"
+        skip_rrna:           "Optional: Skip annotation stage: rrna"
+        skip_ncrna:          "Optional: Skip annotation stage: ncrna"
+        skip_ncrna_region:   "Optional: Skip annotation stage: ncrna_region"
+        skip_crispr:         "Optional: Skip annotation stage: crispr"
+        skip_cds:            "Optional: Skip annotation stage: cds"
+        skip_pseudo:         "Optional: Skip annotation stage: pseudo"
+        skip_sorf:           "Optional: Skip annotation stage: sorf"
+        skip_gap:            "Optional: Skip annotation stage: gap"
+        skip_ori:            "Optional: Skip annotation stage: ori"
+        skip_filter:         "Optional: Skip annotation stage: filter"
+        skip_plot:           "Optional: Skip plotting"
+        debug:               "Optional: Run bakta in debug mode."
     }
     input {
             String file_prefix
@@ -29,6 +45,22 @@ workflow Bakta {
             String? strain
             String? locus_tag_prefix
             String gram = "?"
+            Boolean? keep_contig_headers
+            Boolean? metagenome
+            Boolean? skip_trna
+            Boolean? skip_tmrna
+            Boolean? skip_rrna
+            Boolean? skip_ncrna
+            Boolean? skip_ncrna_region
+            Boolean? skip_crispr
+            Boolean? skip_cds
+            Boolean? skip_pseudo
+            Boolean? skip_sorf
+            Boolean? skip_gap
+            Boolean? skip_ori
+            Boolean? skip_filter
+            Boolean? skip_plot
+            Boolean? debug
     }
     call Annotate {
         input:
@@ -41,7 +73,23 @@ workflow Bakta {
             species = species,
             strain = strain,
             locus_tag_prefix = locus_tag_prefix,
-            gram = gram
+            gram = gram,
+            keep_contig_headers = keep_contig_headers,
+            metagenome = metagenome,
+            skip_trna = skip_trna,
+            skip_tmrna = skip_tmrna,
+            skip_rrna = skip_rrna,
+            skip_ncrna = skip_ncrna,
+            skip_ncrna_region = skip_ncrna_region,
+            skip_crispr = skip_crispr,
+            skip_cds = skip_cds,
+            skip_pseudo = skip_pseudo,
+            skip_sorf = skip_sorf,
+            skip_gap = skip_gap,
+            skip_ori = skip_ori,
+            skip_filter = skip_filter,
+            skip_plot = skip_plot,
+            debug = debug
     }
     output {
         File annotations_tsv = Annotate.annotations_tsv
@@ -63,16 +111,32 @@ workflow Bakta {
 
 task Annotate {
     parameter_meta {
-        file_prefix:        "Prefix to pass to bakta for file output naming."
-        contigs:            "fasta file containing contig(s) to annotate."
-        bakta_db:           "tar.gz containing the full bakta database for annotation"
-        ncbi_compliant:     "[Default: False] Run bakta in Genbank compliance mode."
-        complete:           "[Default: False] Is this a complete genome?"
-        genus:              "[Default: Borrelia] genus to pass to bakta"
-        species:            "[Default: burgdorferi] species to pass to bakta"
-        strain:             "[Default: \'\'] strain to pass to bakta"
-        locus_tag_prefix:   "Optional: NCBI assigned locus tag prefix."
-        gram:               "[Default: \'?\'] Is this bacteria gram \'+\' or \'-\' ?"
+        file_prefix:         "Prefix to pass to bakta for file output naming."
+        contigs:             "fasta file containing contig(s) to annotate."
+        bakta_db:            "tar.gz containing the full bakta database for annotation"
+        ncbi_compliant:      "[Default: False] Run bakta in Genbank compliance mode."
+        complete:            "[Default: False] Is this a complete genome?"
+        genus:               "[Default: Borrelia] genus to pass to bakta"
+        species:             "[Default: burgdorferi] species to pass to bakta"
+        strain:              "[Default: \'\'] strain to pass to bakta"
+        gram:                "[Default: \'?\'] Is this bacteria gram \'+\' or \'-\' ?"
+        locus_tag_prefix:    "Optional: NCBI assigned locus tag prefix."
+        keep_contig_headers: "Optional:keep contig headers of input assembly."
+        metagenome:          "Optional:"
+        skip_trna:           "Optional: Skip annotation stage: trna"
+        skip_tmrna:          "Optional: Skip annotation stage: tmrna"
+        skip_rrna:           "Optional: Skip annotation stage: rrna"
+        skip_ncrna:          "Optional: Skip annotation stage: ncrna"
+        skip_ncrna_region:   "Optional: Skip annotation stage: ncrna_region"
+        skip_crispr:         "Optional: Skip annotation stage: crispr"
+        skip_cds:            "Optional: Skip annotation stage: cds"
+        skip_pseudo:         "Optional: Skip annotation stage: pseudo"
+        skip_sorf:           "Optional: Skip annotation stage: sorf"
+        skip_gap:            "Optional: Skip annotation stage: gap"
+        skip_ori:            "Optional: Skip annotation stage: ori"
+        skip_filter:         "Optional: Skip annotation stage: filter"
+        skip_plot:           "Optional: Skip plotting"
+        debug:               "Optional: Run bakta in debug mode."
     }
     input {
         String file_prefix
@@ -86,7 +150,22 @@ task Annotate {
         String? strain
         String? locus_tag_prefix
         String gram = "?"
-
+        Boolean? keep_contig_headers
+        Boolean? metagenome
+        Boolean? skip_trna
+        Boolean? skip_tmrna
+        Boolean? skip_rrna
+        Boolean? skip_ncrna
+        Boolean? skip_ncrna_region
+        Boolean? skip_crispr
+        Boolean? skip_cds
+        Boolean? skip_pseudo
+        Boolean? skip_sorf
+        Boolean? skip_gap
+        Boolean? skip_ori
+        Boolean? skip_filter
+        Boolean? skip_plot
+        Boolean? debug
         RuntimeAttr? runtime_attr_override
     }
 
@@ -107,12 +186,28 @@ task Annotate {
             --prefix "~{file_prefix}" \
             --db "$BAKTA_DB" \
             --gram "~{gram}" \
-            ~{if defined(genus)            then "--genus '" + genus            + "'" else ""} \
-            ~{if defined(species)          then "--species '" + species        + "'" else ""} \
-            ~{if defined(strain)           then "--strain '" + strain          + "'" else ""} \
-            ~{if complete                  then "--complete"                        else ""} \
-            ~{if ncbi_compliant            then "--compliant"                       else ""} \
-            ~{if defined(locus_tag_prefix) then "--locus-tag '" + locus_tag_prefix + "'" else ""} \
+            ~{if defined(genus)               then "--genus '" + genus                + "'" else ""} \
+            ~{if defined(species)             then "--species '" + species            + "'" else ""} \
+            ~{if defined(strain)              then "--strain '" + strain              + "'" else ""} \
+            ~{if complete                     then "--complete"                             else ""} \
+            ~{if ncbi_compliant               then "--compliant"                            else ""} \
+            ~{if defined(locus_tag_prefix)    then "--locus-tag '" + locus_tag_prefix + "'" else ""} \
+            ~{if defined(keep_contig_headers) then "--keep-contig-headers"                  else ""} \
+            ~{if defined(metagenome)          then "--meta"                                 else ""} \
+            ~{if defined(skip_trna)           then "--skip-trna"                            else ""} \
+            ~{if defined(skip_tmrna)          then "--skip-tmrna"                           else ""} \
+            ~{if defined(skip_rrna)           then "--skip-rrna"                            else ""} \
+            ~{if defined(skip_ncrna)          then "--skip-ncrna"                           else ""} \
+            ~{if defined(skip_ncrna_region)   then "--skip-ncrna-region"                    else ""} \
+            ~{if defined(skip_crispr)         then "--skip-crispr"                          else ""} \
+            ~{if defined(skip_cds)            then "--skip-cds"                             else ""} \
+            ~{if defined(skip_pseudo)         then "--skip-pseudo"                          else ""} \
+            ~{if defined(skip_sorf)           then "--skip-sorf"                            else ""} \
+            ~{if defined(skip_gap)            then "--skip-gap"                             else ""} \
+            ~{if defined(skip_ori)            then "--skip-ori"                             else ""} \
+            ~{if defined(skip_filter)         then "--skip-filter"                          else ""} \
+            ~{if defined(skip_plot)           then "--skip-plot"                            else ""} \
+            ~{if defined(debug)               then "--debug"                                else ""} \
             "~{contigs}"
     >>>
 
@@ -147,7 +242,7 @@ task Annotate {
     runtime {
         cpu:                    select_first([runtime_attr.cpu_cores,         default_attr.cpu_cores])
         memory:                 select_first([runtime_attr.mem_gb,            default_attr.mem_gb]) + " GiB"
-        disks: "local-disk " +  select_first([runtime_attr.disk_gb,           default_attr.disk_gb]) + " HDD"
+        disks: "local-disk " +  select_first([runtime_attr.disk_gb,           default_attr.disk_gb]) + " SSD"
         bootDiskSizeGb:         select_first([runtime_attr.boot_disk_gb,      default_attr.boot_disk_gb])
         preemptible:            select_first([runtime_attr.preemptible_tries, default_attr.preemptible_tries])
         maxRetries:             select_first([runtime_attr.max_retries,       default_attr.max_retries])
