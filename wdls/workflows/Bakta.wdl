@@ -103,8 +103,8 @@ workflow Bakta {
         File hypotheticals_tsv = Annotate.hypotheticals_tsv
         File hypotheticals_faa = Annotate.hypotheticals_faa
         File summary_txt = Annotate.summary_txt
-        File png = Annotate.png
-        File svg = Annotate.svg
+        File? png = Annotate.png
+        File? svg = Annotate.svg
         File summary_json = Annotate.summary_json
     }
 }
@@ -223,8 +223,8 @@ task Annotate {
         File hypotheticals_tsv = "~{file_prefix}.hypotheticals.tsv"
         File hypotheticals_faa = "~{file_prefix}.hypotheticals.faa"
         File summary_txt = "~{file_prefix}.txt"
-        File png = "~{file_prefix}.png"
-        File svg = "~{file_prefix}.svg"
+        File? png = "~{file_prefix}.png"
+        File? svg = "~{file_prefix}.svg"
         File summary_json = "~{file_prefix}.json"
     }
 
